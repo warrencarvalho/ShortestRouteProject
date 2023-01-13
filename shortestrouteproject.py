@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 import heapq
+from datetime import datetime, timedelta
 
 # Defines Dijkstra's algorithm
 def dijkstra(graph, start, goal):
@@ -74,7 +75,7 @@ def calculations(destination):
         "H": "Hospital Kajang",
         "I": "Semenyih",
         "J": "Seksyen 8",
-        "K": "Hospital Az-Zahra"
+        "K": "Hospital Az-Zahrah"
     }
 
     # Strips the directions output from Dijkstra's algorithm
@@ -100,86 +101,95 @@ def calculations(destination):
 
         resultC = resultC + " → " + str(locationDictionary[str6[i]])
 
-    # Prints results
-    print(resultA)
-    print(resultB)
-    print(resultC)
-
+    # Distances calculated by Dijkstra's algorithm
     distanceSerdang = str1[0]
     distanceKajang = str2[0]
     distanceZahra = str3[0]
 
-    distanceArray = [distanceSerdang, distanceKajang, distanceZahra]
+    # Places durations and directions in separate arrays
+    durationArray = [distanceSerdang, distanceKajang, distanceZahra]
     directionArray = [resultA, resultB, resultC]
 
-    # Sorts directionArray
-    if (distanceArray[0] >= distanceArray[1]):
+    # Sorts durationArray and directionArray
+    if (durationArray[0] >= durationArray[1]):
 
-        distanceArray[0], distanceArray[1] = distanceArray[1], distanceArray[0]
+        durationArray[0], durationArray[1] = durationArray[1], durationArray[0]
         directionArray[0], directionArray[1] = directionArray[1], directionArray[0]
 
-    if (distanceArray[0] >= distanceArray[2]):
+    if (durationArray[0] >= durationArray[2]):
 
-        distanceArray[0], distanceArray[2] = distanceArray[2], distanceArray[0]
+        durationArray[0], durationArray[2] = durationArray[2], durationArray[0]
         directionArray[0], directionArray[2] = directionArray[2], directionArray[0]
 
-    if (distanceArray[1] >= distanceArray[2]):
+    if (durationArray[1] >= durationArray[2]):
 
-        distanceArray[1], distanceArray[2] = distanceArray[2], distanceArray[1]
+        durationArray[1], durationArray[2] = durationArray[2], durationArray[1]
         directionArray[1], directionArray[2] = directionArray[2], directionArray[1]
+
+    # Calculates ETA based on duration
+    timeArray = []
+    timeArray.append((datetime.now() + timedelta(minutes=durationArray[0])).strftime("%H:%M:%S"))
+    timeArray.append((datetime.now() + timedelta(minutes=durationArray[1])).strftime("%H:%M:%S"))
+    timeArray.append((datetime.now() + timedelta(minutes=durationArray[2])).strftime("%H:%M:%S"))
 
     # Returns results
     results = []
     for l in range(0, 3):
 
         results.append(directionArray[l])
-        results.append("Estimated time: " + str(distanceArray[l]) + " minutes")
+        results.append("Estimated travel time: " + str(durationArray[l]) + " minutes")
+        results.append("ETA: " + str(timeArray[l]))
         results.append("\n")
 
-    print(results)
     return '\n'.join(str(x) for x in results)
 
 # GUI
 sg.theme('default1')  # Add a touch of color
 
-# All the stuff inside your window.
+# Sublayout for functions
+sublayout1 = [
+
+    # Select site of incident
+    [
+        sg.Text('SELECT LOCATION OF INCIDENT:')
+    ],
+
+    # Radio buttons
+    [
+        sg.Radio('B11', "RADIO1", default=False),
+        sg.Radio('903', "RADIO1"),
+        sg.Radio('Persiaran Jaya', "RADIO1"),
+        sg.Radio('B50', "RADIO1"),
+        sg.Radio('E18', "RADIO1"),
+        sg.Radio('E7', "RADIO1"),
+        sg.Radio('Semenyih', "RADIO1"),
+        sg.Radio('Seksyen 8', "RADIO1")
+    ],
+
+    # FASTEST ROUTE text
+    [
+        sg.Text("\nFASTEST ROUTE", visible=False, key='fastest')
+    ],
+
+    # Results (initially is invisible before inputs are sent for calculation)
+    [
+        sg.Text(calculations("B"), visible=False, key='results')
+    ],
+
+    # Calculate and Close buttons
+    [
+        sg.Button('Calculate'), sg.Button('Close')
+    ]
+]
+
+# Main layout
 layout1 = [
 
     # Labelled map
     [
         sg.Image('resources/finalmap.png'),
-
-        # Select site of incident
-        [
-            sg.Text('Select site of incident')
-        ],
-
-        # Radio buttons
-        [
-            sg.Radio('B11', "RADIO1", default=False),
-            sg.Radio('903', "RADIO1"),
-            sg.Radio('Persiaran Jaya', "RADIO1"),
-            sg.Radio('B50', "RADIO1"),
-            sg.Radio('E18', "RADIO1"),
-            sg.Radio('E7', "RADIO1"),
-            sg.Radio('Semenyih', "RADIO1"),
-            sg.Radio('Seksyen 8', "RADIO1")
-        ],
-
-        # FASTEST ROUTE text
-        [
-            sg.Text("FASTEST ROUTE", visible=False, key='fastest')
-        ],
-
-        # Results (initially is invisible before inputs are sent for calculation)
-        [
-            sg.Text(calculations("B"), visible=False, key='results')
-        ],
-
-            # Calculate and Close buttons
-        [
-            sg.Button('Calculate'), sg.Button('Close')
-        ]
+        sg.VSeparator(),
+        sg.Column(sublayout1)
     ]
 ]
 
@@ -197,40 +207,39 @@ while True:
 
     # If OK button is clicked
     if event == 'Calculate':
-        print(event)
-        print(values)
+
         # Changes results to be visible after calculations
         window['fastest'].update(visible=True)
 
-        if values[0] == True:
+        if values[2] == True:
 
             window['results'].update(calculations("B"), visible=True)
 
-        if values[1] == True:
+        if values[3] == True:
 
             window['results'].update(calculations("C"), visible=True)
 
-        if values[2] == True:
+        if values[4] == True:
 
             window['results'].update(calculations("D"), visible=True)
 
-        if values[3] == True:
+        if values[5] == True:
 
             window['results'].update(calculations("E"), visible=True)
 
-        if values[4] == True:
+        if values[6] == True:
 
             window['results'].update(calculations("F"), visible=True)
 
-        if values[5] == True:
+        if values[7] == True:
 
             window['results'].update(calculations("G"), visible=True)
 
-        if values[6] == True:
+        if values[8] == True:
 
             window['results'].update(calculations("I"), visible=True)
 
-        if values[7] == True:
+        if values[9] == True:
 
             window['results'].update(calculations("J"), visible=True)
 
