@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import heapq
 
+# Defines Dijkstra's algorithm
 def dijkstra(graph, start, goal):
 
     queue = []
@@ -25,8 +26,9 @@ def dijkstra(graph, start, goal):
 
     return float("inf")
 
-
+# Defines build_path function
 def build_path(previous, goal):
+
     path = []
     node = goal
     while node is not None:
@@ -34,9 +36,12 @@ def build_path(previous, goal):
         node = previous[node]
     return path[::-1]
 
+# Defines calculations function
 def calculations(destination):
 
+    # Graph of nodes for Dijkstra's algorithm
     graph = {
+
         "A": {"B": 3},
         "B": {"A": 3, "C": 6, "D": 3},
         "C": {"B": 6, "E": 9},
@@ -50,11 +55,14 @@ def calculations(destination):
         "K": {"D": 7, "J": 8}
     }
 
+    # Start and destination inputs for Dijkstra's algorithm
     str1 = dijkstra(graph, "A", destination)
     str2 = dijkstra(graph, "H", destination)
     str3 = dijkstra(graph, "K", destination)
 
+    # Dictionary of nodes to their actual name
     locationDictionary = {
+
         "A": "Hospital Serdang",
         "B": "B11",
         "C": "903",
@@ -72,15 +80,17 @@ def calculations(destination):
     distanceKajang = str2[0]
     distanceZahra = str3[0]
 
-
+    # Strips the directions output from Dijkstra's algorithm
     str4 = str1[1]
     str5 = str2[1]
     str6 = str3[1]
 
+    # Converts node letters to their actual name by referring to the dictionary
     resultA = str(locationDictionary[str4[0]])
     resultB = str(locationDictionary[str5[0]])
     resultC = str(locationDictionary[str6[0]])
 
+    # Converts the list of actual names to a string of directions
     for i in range(1, len(str4)):
 
         resultA = resultA + " → " + str(locationDictionary[str4[i]])
@@ -93,18 +103,29 @@ def calculations(destination):
 
         resultC = resultC + " → " + str(locationDictionary[str6[i]])
 
+    # Prints results
     print(resultA)
     print(resultB)
     print(resultC)
+
+    # Places results of every hospital in an array
     results = [resultA, resultB, resultC]
 
+    # Returns results
     return '\n'.join(str(x) for x in results)
 
+# GUI
 sg.theme('default1')  # Add a touch of color
 
 # All the stuff inside your window.
 layout1 = [
 
+    # Labelled map
+    [
+        sg.Image('resources/finalmap.png')
+    ],
+
+    # Radio buttons
     [
         sg.Radio('B11', "RADIO1", default=False),
         sg.Radio('903', "RADIO1"),
@@ -116,12 +137,18 @@ layout1 = [
         sg.Radio('Seksyen 8', "RADIO1")
     ],
 
+    # OK and Close buttons
     [
-        sg.OK(), sg.Button('Cancel')
+        sg.OK(), sg.Button('Close')
     ],
 
+    # FASTEST ROUTE text
     [
-        sg.Text("FASTEST ROUTE\n", visible=False, key='fastest'),
+        sg.Text("FASTEST ROUTE", visible=False, key='fastest')
+    ],
+
+    # Results (initially is invisible before inputs are sent for calculation)
+    [
         sg.Text(calculations("B"), visible=False, key='results')
     ]
 
@@ -135,42 +162,46 @@ while True:
 
     event, values = window.read()
 
-    if event == sg.WIN_CLOSED or event == 'Cancel':  # if user closes window or clicks cancel
+    # If Close button is clicked
+    if event == sg.WIN_CLOSED or event == 'Close':
         break
 
+    # If OK button is clicked
     if event == "OK":
         print(event)
+
+        # Changes results to be visible after calculations
         window['fastest'].update(visible=True)
-
-        if values[0] == True:
-
-            window['results'].update(calculations("B"), visible=True)
 
         if values[1] == True:
 
-            window['results'].update(calculations("C"), visible=True)
+            window['results'].update(calculations("B"), visible=True)
 
         if values[2] == True:
 
-            window['results'].update(calculations("D"), visible=True)
+            window['results'].update(calculations("C"), visible=True)
 
         if values[3] == True:
 
-            window['results'].update(calculations("E"), visible=True)
+            window['results'].update(calculations("D"), visible=True)
 
         if values[4] == True:
 
-            window['results'].update(calculations("F"), visible=True)
+            window['results'].update(calculations("E"), visible=True)
 
         if values[5] == True:
 
-            window['results'].update(calculations("G"), visible=True)
+            window['results'].update(calculations("F"), visible=True)
 
         if values[6] == True:
 
-            window['results'].update(calculations("I"), visible=True)
+            window['results'].update(calculations("G"), visible=True)
 
         if values[7] == True:
+
+            window['results'].update(calculations("I"), visible=True)
+
+        if values[8] == True:
 
             window['results'].update(calculations("J"), visible=True)
 
