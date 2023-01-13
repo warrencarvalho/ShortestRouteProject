@@ -122,7 +122,7 @@ layout1 = [
 
     [
         sg.Text("FASTEST ROUTE\n", visible=False, key='fastest'),
-        sg.Text(calculations("C"), visible=False, key='results')
+        sg.Text(calculations("B"), visible=False, key='results')
     ]
 
 ]
