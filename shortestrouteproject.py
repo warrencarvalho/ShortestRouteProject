@@ -164,7 +164,7 @@ sublayout1 = [
 
     # FASTEST ROUTE text
     [
-        sg.Text("\nFASTEST ROUTE", visible=False, key='fastest')
+        sg.Text("\nFASTEST ROUTE", visible=False, text_color='red', key='fastest')
     ],
 
     # Results (initially is invisible before inputs are sent for calculation)
