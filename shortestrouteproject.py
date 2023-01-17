@@ -78,28 +78,23 @@ def calculations(destination):
         "K": "Hospital Az-Zahrah"
     }
 
-    # Strips the directions output from Dijkstra's algorithm
-    str4 = str1[1]
-    str5 = str2[1]
-    str6 = str3[1]
-
     # Converts node letters to their actual name by referring to the dictionary
-    resultA = str(locationDictionary[str4[0]])
-    resultB = str(locationDictionary[str5[0]])
-    resultC = str(locationDictionary[str6[0]])
+    resultA = str(locationDictionary[str1[1][0]])
+    resultB = str(locationDictionary[str2[1][0]])
+    resultC = str(locationDictionary[str3[1][0]])
 
     # Converts the list of actual names to a string of directions
-    for i in range(1, len(str4)):
+    for i in range(1, len(str1[1])):
 
-        resultA = resultA + " → " + str(locationDictionary[str4[i]])
+        resultA = resultA + " → " + str(locationDictionary[str1[1][i]])
 
-    for i in range(1, len(str5)):
+    for i in range(1, len(str2[1])):
 
-        resultB = resultB + " → " + str(locationDictionary[str5[i]])
+        resultB = resultB + " → " + str(locationDictionary[str2[1][i]])
 
-    for i in range(1, len(str6)):
+    for i in range(1, len(str3[1])):
 
-        resultC = resultC + " → " + str(locationDictionary[str6[i]])
+        resultC = resultC + " → " + str(locationDictionary[str3[1][i]])
 
     # Distances calculated by Dijkstra's algorithm
     distanceSerdang = str1[0]
@@ -128,17 +123,18 @@ def calculations(destination):
 
     # Calculates ETA based on duration
     timeArray = []
-    timeArray.append((datetime.now() + timedelta(minutes=durationArray[0])).strftime("%H:%M:%S"))
-    timeArray.append((datetime.now() + timedelta(minutes=durationArray[1])).strftime("%H:%M:%S"))
-    timeArray.append((datetime.now() + timedelta(minutes=durationArray[2])).strftime("%H:%M:%S"))
+
+    for l in range(0, 3):
+
+        timeArray.append((datetime.now() + timedelta(minutes=durationArray[l])).strftime("%H:%M:%S"))
 
     # Returns results
     results = []
-    for l in range(0, 3):
+    for m in range(0, 3):
 
-        results.append(directionArray[l])
-        results.append("Estimated travel time: " + str(durationArray[l]) + " minutes")
-        results.append("ETA: " + str(timeArray[l]))
+        results.append(directionArray[m])
+        results.append("Estimated travel time: " + str(durationArray[m]) + " minutes")
+        results.append("ETA: " + str(timeArray[m]))
         results.append("\n")
 
     return '\n'.join(str(x) for x in results)
@@ -244,4 +240,3 @@ while True:
             window['results'].update(calculations("J"), visible=True)
 
 window.close()
-
