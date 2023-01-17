@@ -126,7 +126,7 @@ def calculations(destination):
 
     for l in range(0, 3):
 
-        timeArray.append((datetime.now() + timedelta(minutes=durationArray[l])).strftime("%H:%M:%S"))
+        timeArray.append((datetime.now() + timedelta(minutes=durationArray[l])).strftime("%I:%M %p"))
 
     # Returns results
     results = []
