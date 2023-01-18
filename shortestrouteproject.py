@@ -140,47 +140,62 @@ def calculations(destination):
     return '\n'.join(str(x) for x in results)
 
 # GUI
-sg.theme('default1')  # Add a touch of color
+sg.LOOK_AND_FEEL_TABLE['MyTheme'] = {'BACKGROUND': '#d63f3d',
+                                        'TEXT': '#FAF9F6',
+                                        'INPUT': '#339966',
+                                        'TEXT_INPUT': '#000000',
+                                        'SCROLL': '#99CC99',
+                                        'BUTTON': ('#d63f3d', '#FAF9F6'),
+                                        'PROGRESS': ('#D1826B', '#CC8019'),
+                                        'BORDER': 1, 'SLIDER_DEPTH': 0,
+                                        'PROGRESS_DEPTH': 0, }
+
+sg.theme('MyTheme')  # Add a touch of color
+
+fontNunito = ('Nunito', 12)
 
 # Sublayout for functions
 sublayout1 = [
 
     # Select site of incident
     [
-        sg.Text('SELECT LOCATION OF INCIDENT:')
+        sg.Text('SELECT LOCATION OF INCIDENT:', font=('Nunito Bold', 14))
     ],
 
     # Radio buttons
     [
-        sg.Radio('B11', "RADIO1", default=False),
-        sg.Radio('903', "RADIO1"),
-        sg.Radio('Persiaran Jaya', "RADIO1"),
-        sg.Radio('B50', "RADIO1"),
-        sg.Radio('E18', "RADIO1"),
-        sg.Radio('E7', "RADIO1"),
-        sg.Radio('Semenyih', "RADIO1"),
-        sg.Radio('Seksyen 8', "RADIO1")
+        sg.Radio('B11', "RADIO1", font=fontNunito, default=False),
+        sg.Radio('903', "RADIO1", font=fontNunito),
+        sg.Radio('Persiaran Jaya', "RADIO1", font=fontNunito),
+        sg.Radio('B50', "RADIO1", font=fontNunito),
+        sg.Radio('E18', "RADIO1", font=fontNunito),
+        sg.Radio('E7', "RADIO1", font=fontNunito),
+        sg.Radio('Semenyih', "RADIO1", font=fontNunito),
+        sg.Radio('Seksyen 8', "RADIO1", font=fontNunito)
     ],
 
     # FASTEST ROUTE text
     [
-        sg.Text("\nFASTEST ROUTE", visible=False, text_color='red', key='fastest')
+        sg.Text("\nFASTEST ROUTE", visible=False, font=('Nunito Bold', 14), key='fastest')
     ],
 
     # Results (initially is invisible before inputs are sent for calculation)
     [
-        sg.Text(calculations("B"), visible=False, key='results')
+        sg.Text(calculations("B"), visible=False, font=fontNunito, key='results')
     ],
 
     # Calculate and Close buttons
     [
-        sg.Button('Calculate'), sg.Button('Close')
+        sg.Button('Calculate', font=fontNunito), sg.Button('Close', font=fontNunito)
     ]
 ]
 
 # Main layout
 layout1 = [
 
+    [
+        sg.Text('Shortest Route Project', font=('Bebas Neue', 60))
+    ],
     # Labelled map
     [
         sg.Image('resources/finalmap.png'),
