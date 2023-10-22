@@ -9,7 +9,7 @@ Shortest Route Project (SRP) is an algorithm analysis group project for SSK4106-
 
 <br>
 
-More features may be implemented in the future.
+For more information and complete details about this project, please visit our [Google Sites](https://sites.google.com/d/15nhBgII_B-NKWJqrOD7XgccVlwUl7foD/p/1RYayN8SuHAiQf6z0jpl2jwl_jc-3M0kb) website.
 
 
 <br>
